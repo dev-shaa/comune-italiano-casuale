@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ ! -f "$HOME/.cache/comune/Elenco-comuni-italiani.csv" ]; then
+	wget https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv -q -P $HOME/.cache/comune  \
+	&& echo "File scaricato"
+fi
+
+shuf -n 1 $HOME/.cache/comune/Elenco-comuni-italiani.csv | awk -F ';' '{ print $6 " (" $15 ")" }'
