@@ -1,2 +1,2 @@
-# comune-italiano-casuale
-Un semplice script per stampare a schermo un comune italiano casuale.
+# Comune italiano casuale (WIP)
+Un semplice script bash per stampare a schermo un comune italiano casuale.
