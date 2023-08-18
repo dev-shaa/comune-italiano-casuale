@@ -1,8 +1,40 @@
 #!/bin/bash
 
-if [ ! -f "$HOME/.cache/comune/Elenco-comuni-italiani.csv" ]; then
-	wget https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv -q -P $HOME/.cache/comune  \
-	&& echo "File scaricato"
+n=1
+long_version=false
+force_download=false
+
+while getopts "hlfn:" opt
+do
+	case $opt in
+		h)
+		echo "Uso: comune [OPZIONE]...";
+		echo "Stampa un comune italiano casuale.";
+		echo " -n NUM specifica quanti comuni vengono stampati a schermo";
+		echo " -l usa un formato lungo";
+		echo " -f forza il download del file dei comuni, anche se già presente";
+		echo " -h mostra questo aiuto ed esce";
+		exit 0;;
+		l) long_version=true;;
+		n) n=$OPTARG;;
+		f) force_download=true;;
+	esac
+done
+
+# scarica il file contenente i comuni se non è presente o se viene specificata l'opzione
+# esci con codice di errore se non è possibile
+
+if [ $force_download = true ] || [ ! -f "$HOME/.cache/comune/Elenco-comuni-italiani.csv" ]; then
+	wget "https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv" -q -P $HOME/.cache/comune || exit 1
 fi
 
-shuf -n 1 $HOME/.cache/comune/Elenco-comuni-italiani.csv | awk -F ';' '{ print $6 " (" $15 ")" }'
+# la prima riga è di intestazione, quindi non dobbiamo considerarla
+# dopo seleziona n comuni casualmente
+
+comuni=$( tail -n +2 $HOME/.cache/comune/Elenco-comuni-italiani.csv | shuf -n $n )
+
+if [ $long_version = true ]; then
+	echo "$comuni" | awk -F ';' '{ print $6 " (" $12 ", " $11 ")" }'
+else
+	echo "$comuni" | awk -F ';' '{ print $6 " (" $15 ")" }'
+fi
