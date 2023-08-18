@@ -16,7 +16,7 @@ comune [OPZIONI]
 ```
 
 Di seguito vengono riportate le opzioni utilizzabili:
-- `n NUM` specifica quanti comuni vengono stampati a schermo
-- `l` usa il formato lungo
-- `f` forza il download del file dei comuni, anche se già presente
-- `h` mostra questo aiuto ed esce
+- `-n NUM` specifica quanti comuni vengono stampati a schermo
+- `-l` usa il formato lungo
+- `-f` forza il download del file dei comuni, anche se già presente
+- `-h` mostra questo aiuto ed esce
